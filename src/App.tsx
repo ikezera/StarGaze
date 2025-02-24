@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Star,
   Moon,
@@ -12,9 +12,6 @@ import {
   Truck,
   Shield,
   Award,
-  ArrowRight,
-  Timer,
-  Settings,
 } from 'lucide-react';
 import { useProduct } from './components/ProductContext';
 import { PRODUCT, REVIEWS, GALLERY_IMAGES } from './components/ProductData';
@@ -36,12 +33,18 @@ function App() {
 
   const total = cartQuantity * PRODUCT.price;
 
+  // Persist dark mode preference in localStorage
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
+  }, [isDarkMode]);
+
   return (
-    <div
-      className={`min-h-screen ${
-        isDarkMode ? "bg-dark text-gray-100" : "bg-gray-100 text-gray-900"
-      } transition-colors duration-300`}
-    >
+    <div className={`min-h-screen ${isDarkMode ? 'bg-dark text-gray-100' : 'bg-gray-100 text-gray-900'}`}>
       {/* Navigation */}
       <nav className={`fixed w-full z-50 ${isDarkMode ? 'bg-dark-lighter/90' : 'bg-white/90'} backdrop-blur-md border-b border-primary/20`}>
         <div className="container mx-auto py-6">
@@ -54,16 +57,14 @@ function App() {
               <button
                 onClick={toggleDarkMode}
                 className="p-3 hover:bg-primary/10 rounded-full transition-colors"
+                aria-label="Toggle Dark Mode"
               >
-                {isDarkMode ? (
-                  <Sun className="w-7 h-7" />
-                ) : (
-                  <Moon className="w-7 h-7" />
-                )}
+                {isDarkMode ? <Sun className="w-7 h-7" /> : <Moon className="w-7 h-7" />}
               </button>
               <button
                 onClick={() => setIsCartOpen(true)}
                 className="relative p-3 hover:bg-primary/10 rounded-full transition-colors"
+                aria-label="Open Cart"
               >
                 <ShoppingCart className="w-7 h-7" />
                 {cartQuantity > 0 && (
@@ -85,23 +86,20 @@ function App() {
             onClick={() => setIsCartOpen(false)}
           />
           <div
-            className={`absolute right-0 top-0 h-full w-full max-w-xl ${
-              isDarkMode ? "bg-dark-lighter" : "bg-white"
-            } p-8 shadow-xl transition-all duration-300 transform translate-x-0`}
+            className={`absolute right-0 top-0 h-full w-full max-w-xl ${isDarkMode ? 'bg-dark-lighter' : 'bg-white'} p-8 shadow-xl transition-all duration-300 transform translate-x-0`}
           >
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-3xl font-bold text-gradient">Your Cart</h2>
               <button
                 onClick={() => setIsCartOpen(false)}
                 className="p-2 hover:bg-primary/10 rounded-full transition-colors"
+                aria-label="Close Cart"
               >
                 <X className="w-7 h-7" />
               </button>
             </div>
             {cartQuantity === 0 ? (
-              <div className="text-center py-12 text-gray-400 text-lg">
-                Your cart is empty
-              </div>
+              <div className="text-center py-12 text-gray-400 text-lg">Your cart is empty</div>
             ) : (
               <>
                 <div className="space-y-6 mb-8">
@@ -114,16 +112,13 @@ function App() {
                       />
                       <div className="flex-1">
                         <h3 className="text-xl font-semibold mb-2">{PRODUCT.name}</h3>
-                        <p className="text-gray-400 mb-2">
-                          {PRODUCT.colors[selectedColor]}
-                        </p>
-                        <p className="text-primary text-lg font-semibold">
-                          £{PRODUCT.price.toFixed(2)}
-                        </p>
+                        <p className="text-gray-400 mb-2">{PRODUCT.colors[selectedColor]}</p>
+                        <p className="text-primary text-lg font-semibold">£{PRODUCT.price.toFixed(2)}</p>
                         <div className="flex items-center gap-4 mt-4">
                           <button
                             onClick={() => updateQuantity(-1)}
                             className="p-2 hover:bg-primary/10 rounded-full transition-colors"
+                            aria-label="Decrease Quantity"
                           >
                             <Minus className="w-5 h-5" />
                           </button>
@@ -131,6 +126,7 @@ function App() {
                           <button
                             onClick={() => updateQuantity(1)}
                             className="p-2 hover:bg-primary/10 rounded-full transition-colors"
+                            aria-label="Increase Quantity"
                           >
                             <Plus className="w-5 h-5" />
                           </button>
@@ -205,9 +201,7 @@ function App() {
                     key={index}
                     onClick={() => setSelectedImage(index)}
                     className={`w-24 h-24 rounded-xl overflow-hidden border-2 transition-colors ${
-                      selectedImage === index
-                        ? "border-primary"
-                        : "border-transparent"
+                      selectedImage === index ? 'border-primary' : 'border-transparent'
                     }`}
                   >
                     <img
@@ -247,7 +241,7 @@ function App() {
         </div>
       </section>
 
-      {/* Gallery */}
+      {/* Gallery Section */}
       <section className={`section-spacing ${isDarkMode ? 'bg-dark' : 'bg-white'}`}>
         <div className="container mx-auto">
           <h2 className="text-5xl lg:text-6xl font-bold text-center mb-24 text-gradient">
@@ -273,7 +267,7 @@ function App() {
         </div>
       </section>
 
-      {/* Reviews */}
+      {/* Reviews Section */}
       <section className={`section-spacing ${isDarkMode ? 'bg-dark-lighter' : 'bg-gray-50'}`}>
         <div className="container mx-auto">
           <h2 className="text-5xl lg:text-6xl font-bold text-center mb-24 text-gradient">
@@ -309,7 +303,7 @@ function App() {
         </div>
       </section>
 
-      {/* Benefits */}
+      {/* Benefits Section */}
       <section className={`section-spacing-sm ${isDarkMode ? 'bg-dark' : 'bg-white'}`}>
         <div className="container mx-auto">
           <div className="benefits-section grid grid-cols-1 md:grid-cols-3 gap-16">
