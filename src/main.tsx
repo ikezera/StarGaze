@@ -1,6 +1,6 @@
-// filepath: /C:/ProjetosWebsites/WebsiteAstronauta/StarGaze/src/main.tsx
-import React, { StrictMode } from 'react';
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { ProductProvider } from './components/ProductContext';
 import './index.css';
@@ -10,10 +10,12 @@ if (rootElement) {
   createRoot(rootElement).render(
     <StrictMode>
       <ProductProvider>
-        <App />
+        <BrowserRouter basename="/StarGaze"> {/* Add this line */}
+          <App />
+        </BrowserRouter>
       </ProductProvider>
     </StrictMode>
   );
 } else {
   console.error("Root element not found!");
-};
+}
