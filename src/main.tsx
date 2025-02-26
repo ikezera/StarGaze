@@ -5,10 +5,15 @@ import App from './App';
 import { ProductProvider } from './components/ProductContext';
 import './index.css';
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <ProductProvider>
-      <App />
-    </ProductProvider>
-  </StrictMode>
-);
+const rootElement = document.getElementById('root');
+if (rootElement) {
+  createRoot(rootElement).render(
+    <StrictMode>
+      <ProductProvider>
+        <App />
+      </ProductProvider>
+    </StrictMode>
+  );
+} else {
+  console.error("Root element not found!");
+};
