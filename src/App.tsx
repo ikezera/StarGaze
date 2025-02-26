@@ -17,6 +17,7 @@ import { useProduct } from './components/ProductContext';
 import { PRODUCT, REVIEWS, GALLERY_IMAGES } from './components/ProductData';
 
 function App() {
+
   const {
     cartQuantity,
     selectedColor,
