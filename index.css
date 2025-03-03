@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse 4s ease-in-out infinite;
+}
+
+.bg-shimmer {
+  background: linear-gradient(90deg, 
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.05) 50%,
+    rgba(255,255,255,0) 100%);
+  background-size: 1000px 100%;
+  animation: shimmer 3s infinite linear;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.text-gradient {
+  @apply bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent;
+}
+
+.card-gradient {
+  @apply bg-gradient-to-r from-blue-500/10 to-purple-500/10;
+}
+
+.hover-card {
+  @apply transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/10;
+}
+
+/* New styles for better desktop layout */
+.container {
+  @apply max-w-[1400px] mx-auto px-6 lg:px-8;
+}
+
+.section-spacing {
+  @apply py-32 lg:py-48;
+}
+
+.section-spacing-sm {
+  @apply py-24 lg:py-32;
+}
+
+.hero-content {
+  @apply max-w-3xl mx-auto lg:mx-0;
+}
+
+.feature-card {
+  @apply p-8 lg:p-10;
+}
+
+.gallery-image {
+  @apply h-64 lg:h-[500px];
+}
+
+.review-grid {
+  @apply gap-8 lg:gap-12;
+}
+
+.benefits-section {
+  @apply max-w-6xl mx-auto;
+}
+
+.footer-content {
+  @apply max-w-7xl mx-auto;
+}
