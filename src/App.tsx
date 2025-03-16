@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Star,
   Moon,
@@ -12,12 +12,14 @@ import {
   Truck,
   Shield,
   Award,
+  ArrowRight,
+  Timer,
+  Settings,
 } from 'lucide-react';
 import { useProduct } from './components/ProductContext';
 import { PRODUCT, REVIEWS, GALLERY_IMAGES } from './components/ProductData';
 
 function App() {
-
   const {
     cartQuantity,
     selectedColor,
@@ -34,18 +36,12 @@ function App() {
 
   const total = cartQuantity * PRODUCT.price;
 
-  // Persist dark mode preference in localStorage
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
-  }, [isDarkMode]);
-
   return (
-    <div className={`min-h-screen ${isDarkMode ? 'bg-dark text-gray-100' : 'bg-gray-100 text-gray-900'}`}>
+    <div
+      className={`min-h-screen ${
+        isDarkMode ? "bg-dark text-gray-100" : "bg-gray-100 text-gray-900"
+      } transition-colors duration-300`}
+    >
       {/* Navigation */}
       <nav className={`fixed w-full z-50 ${isDarkMode ? 'bg-dark-lighter/90' : 'bg-white/90'} backdrop-blur-md border-b border-primary/20`}>
         <div className="container mx-auto py-6">
@@ -58,14 +54,16 @@ function App() {
               <button
                 onClick={toggleDarkMode}
                 className="p-3 hover:bg-primary/10 rounded-full transition-colors"
-                aria-label="Toggle Dark Mode"
               >
-                {isDarkMode ? <Sun className="w-7 h-7" /> : <Moon className="w-7 h-7" />}
+                {isDarkMode ? (
+                  <Sun className="w-7 h-7" />
+                ) : (
+                  <Moon className="w-7 h-7" />
+                )}
               </button>
               <button
                 onClick={() => setIsCartOpen(true)}
                 className="relative p-3 hover:bg-primary/10 rounded-full transition-colors"
-                aria-label="Open Cart"
               >
                 <ShoppingCart className="w-7 h-7" />
                 {cartQuantity > 0 && (
@@ -87,20 +85,23 @@ function App() {
             onClick={() => setIsCartOpen(false)}
           />
           <div
-            className={`absolute right-0 top-0 h-full w-full max-w-xl ${isDarkMode ? 'bg-dark-lighter' : 'bg-white'} p-8 shadow-xl transition-all duration-300 transform translate-x-0`}
+            className={`absolute right-0 top-0 h-full w-full max-w-xl ${
+              isDarkMode ? "bg-dark-lighter" : "bg-white"
+            } p-8 shadow-xl transition-all duration-300 transform translate-x-0`}
           >
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-3xl font-bold text-gradient">Your Cart</h2>
               <button
                 onClick={() => setIsCartOpen(false)}
                 className="p-2 hover:bg-primary/10 rounded-full transition-colors"
-                aria-label="Close Cart"
               >
                 <X className="w-7 h-7" />
               </button>
             </div>
             {cartQuantity === 0 ? (
-              <div className="text-center py-12 text-gray-400 text-lg">Your cart is empty</div>
+              <div className="text-center py-12 text-gray-400 text-lg">
+                Your cart is empty
+              </div>
             ) : (
               <>
                 <div className="space-y-6 mb-8">
@@ -113,13 +114,16 @@ function App() {
                       />
                       <div className="flex-1">
                         <h3 className="text-xl font-semibold mb-2">{PRODUCT.name}</h3>
-                        <p className="text-gray-400 mb-2">{PRODUCT.colors[selectedColor]}</p>
-                        <p className="text-primary text-lg font-semibold">£{PRODUCT.price.toFixed(2)}</p>
+                        <p className="text-gray-400 mb-2">
+                          {PRODUCT.colors[selectedColor]}
+                        </p>
+                        <p className="text-primary text-lg font-semibold">
+                          ${PRODUCT.price.toFixed(2)}
+                        </p>
                         <div className="flex items-center gap-4 mt-4">
                           <button
                             onClick={() => updateQuantity(-1)}
                             className="p-2 hover:bg-primary/10 rounded-full transition-colors"
-                            aria-label="Decrease Quantity"
                           >
                             <Minus className="w-5 h-5" />
                           </button>
@@ -127,7 +131,6 @@ function App() {
                           <button
                             onClick={() => updateQuantity(1)}
                             className="p-2 hover:bg-primary/10 rounded-full transition-colors"
-                            aria-label="Increase Quantity"
                           >
                             <Plus className="w-5 h-5" />
                           </button>
@@ -139,9 +142,9 @@ function App() {
                 <div className="border-t border-primary/20 pt-6">
                   <div className="flex justify-between mb-6">
                     <span className="text-xl">Total</span>
-                    <span className="text-xl font-bold">£{total.toFixed(2)}</span>
+                    <span className="text-xl font-bold">${total.toFixed(2)}</span>
                   </div>
-                  <button className="w-full bg-gradient-to-r from-primary to-secondary py-4 rounded-xl text-lg font-semibold hover:opacity-90 transition-opacity">
+                  <button className="w-full bg-gradient-to-r from-primary to-secondary py-4 rounded-xl text-lg font-semibold hover:opacity-90 transition-opacity text-white">
                     Checkout
                   </button>
                 </div>
@@ -177,12 +180,12 @@ function App() {
               <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
                 <button
                   onClick={addToCart}
-                  className="bg-gradient-to-r from-primary to-secondary px-12 py-6 rounded-full text-xl font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-3"
+                  className="bg-gradient-to-r from-primary to-secondary px-12 py-6 rounded-full text-xl font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-3 text-white"
                 >
                   <ShoppingCart className="w-6 h-6" />
-                  Add to Cart - £{PRODUCT.price}
+                  Add to Cart - ${PRODUCT.price}
                 </button>
-                <button className="border-2 border-primary px-12 py-6 rounded-full text-xl font-semibold hover:bg-primary/10 transition-colors flex items-center justify-center gap-3">
+                <button className="bg-gradient-to-r from-primary/20 to-secondary/20 text-white border-2 border-primary px-12 py-6 rounded-full text-xl font-semibold hover:bg-primary/10 transition-colors flex items-center justify-center gap-3">
                   <Heart className="w-6 h-6" />
                   Add to Wishlist
                 </button>
@@ -193,7 +196,7 @@ function App() {
                 <img
                   src={PRODUCT.images[selectedImage]}
                   alt={PRODUCT.name}
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain rounded-2xl"
                 />
               </div>
               <div className="flex justify-center gap-6 mt-8">
@@ -202,13 +205,15 @@ function App() {
                     key={index}
                     onClick={() => setSelectedImage(index)}
                     className={`w-24 h-24 rounded-xl overflow-hidden border-2 transition-colors ${
-                      selectedImage === index ? 'border-primary' : 'border-transparent'
+                      selectedImage === index
+                        ? "border-primary"
+                        : "border-transparent"
                     }`}
                   >
                     <img
                       src={image}
                       alt={`View ${index + 1}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover rounded-2xl"
                     />
                   </button>
                 ))}
@@ -232,7 +237,7 @@ function App() {
               >
                 <div className="flex items-start gap-6">
                   <div className="w-14 h-14 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center flex-shrink-0">
-                    <Check className="w-7 h-7" />
+                    <Check className="w-7 h-7 text-white" />
                   </div>
                   <p className="text-xl">{feature}</p>
                 </div>
@@ -242,7 +247,7 @@ function App() {
         </div>
       </section>
 
-      {/* Gallery Section */}
+      {/* Gallery */}
       <section className={`section-spacing ${isDarkMode ? 'bg-dark' : 'bg-white'}`}>
         <div className="container mx-auto">
           <h2 className="text-5xl lg:text-6xl font-bold text-center mb-24 text-gradient">
@@ -258,8 +263,8 @@ function App() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity">
                   <div className="absolute bottom-0 p-8">
-                    <h3 className="text-2xl font-semibold mb-2">{image.title}</h3>
-                    <p className="text-lg text-gray-300">{image.description}</p>
+                    <h3 className="text-2xl font-semibold mb-2 text-white">{image.title}</h3>
+                    <p className="text-lg text-white">{image.description}</p>
                   </div>
                 </div>
               </div>
@@ -268,7 +273,7 @@ function App() {
         </div>
       </section>
 
-      {/* Reviews Section */}
+      {/* Reviews */}
       <section className={`section-spacing ${isDarkMode ? 'bg-dark-lighter' : 'bg-gray-50'}`}>
         <div className="container mx-auto">
           <h2 className="text-5xl lg:text-6xl font-bold text-center mb-24 text-gradient">
@@ -288,7 +293,7 @@ function App() {
                     />
                   ))}
                 </div>
-                <p className="text-gray-400 text-lg mb-6">{review.text}</p>
+                <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'} text-lg mb-6`}>{review.text}</p>
                 <div className="flex justify-between items-center">
                   <p className="text-xl font-semibold">{review.name}</p>
                   {review.verified && (
@@ -304,7 +309,7 @@ function App() {
         </div>
       </section>
 
-      {/* Benefits Section */}
+      {/* Benefits */}
       <section className={`section-spacing-sm ${isDarkMode ? 'bg-dark' : 'bg-white'}`}>
         <div className="container mx-auto">
           <div className="benefits-section grid grid-cols-1 md:grid-cols-3 gap-16">
@@ -313,21 +318,21 @@ function App() {
                 <Truck className="w-12 h-12 text-primary" />
               </div>
               <h3 className="text-2xl font-semibold mb-4">Free Shipping</h3>
-              <p className="text-gray-400 text-lg">Free delivery on all orders over £50</p>
+              <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'} text-lg`}>Free delivery on all orders over $50</p>
             </div>
             <div className={`text-center hover-card p-10 rounded-2xl ${isDarkMode ? 'bg-dark-light' : 'bg-gray-50'}`}>
               <div className="w-24 h-24 mx-auto mb-8 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full flex items-center justify-center">
                 <Shield className="w-12 h-12 text-primary" />
               </div>
               <h3 className="text-2xl font-semibold mb-4">180-Day Warranty</h3>
-              <p className="text-gray-400 text-lg">Full coverage for peace of mind</p>
+              <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'} text-lg`}>Full coverage for peace of mind</p>
             </div>
             <div className={`text-center hover-card p-10 rounded-2xl ${isDarkMode ? 'bg-dark-light' : 'bg-gray-50'}`}>
               <div className="w-24 h-24 mx-auto mb-8 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full flex items-center justify-center">
                 <Award className="w-12 h-12 text-primary" />
               </div>
               <h3 className="text-2xl font-semibold mb-4">Premium Quality</h3>
-              <p className="text-gray-400 text-lg">High-quality materials and build</p>
+              <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'} text-lg`}>High-quality materials and build</p>
             </div>
           </div>
         </div>
